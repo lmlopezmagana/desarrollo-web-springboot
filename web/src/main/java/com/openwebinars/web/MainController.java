@@ -41,5 +41,16 @@ public class MainController {
         return ResponseEntity.ok("Hola Mundo!!!");
     }
 
+    @GetMapping("/redirect")
+    public String redirect() {
+        return "redirect:/";
+    }
+
+    @GetMapping("/forward")
+    public String forward() {
+        return "forward:/";
+    }
+
+
 
 }
