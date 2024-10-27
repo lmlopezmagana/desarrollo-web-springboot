@@ -1,0 +1,20 @@
+<!DOCTYPE html >
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome</title>
+</head>
+<body>
+<h1 th:text="${message}">Hello world!</h1>
+<p th:text="${otroSaludo}">Mensaje</p>
+<p th:text="${#temporals.format(fecha, 'dd/MMM/yyyy HH:mm')}">Fecha y hora</p>
+<ul th:each="producto : ${productos}"
+    th:styleappend="${producto.enOferta} ? 'background-color:yellow;'">
+    <li><span th:text="${producto.id}"></span> </li>
+    <li><span th:text="${producto.nombre}"></span> </li>
+    <li><span th:text="${producto.precio}"></span> </li>
+    <li>Oferta: <span th:text="${producto.enOferta ? 'Sí' : 'No'}"></span> </li>
+    <li><a th:href="@{/product/{id}/details(id=${producto.id})}">Ver más...</a> </li>
+</ul>
+</body>
+</html>

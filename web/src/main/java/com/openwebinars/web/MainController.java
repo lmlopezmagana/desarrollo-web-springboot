@@ -1,5 +1,6 @@
 package com.openwebinars.web;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -7,11 +8,14 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.awt.geom.Line2D;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Controller
+@RequiredArgsConstructor
 public class MainController {
+
+    private final ProductoRepository productoRepository;
 
     @GetMapping("/")
     public String welcome(Model model) {
@@ -78,6 +82,20 @@ public class MainController {
     public ResponseEntity<String> ejemploMultiValueMap(
             @RequestParam MultiValueMap<String, String> params) {
         return ResponseEntity.ok(params.toString());
+    }
+
+    @GetMapping("/tips")
+    public String tipsThymeleaf(Model model) {
+        /*Producto producto = Producto.builder()
+                .id(7L)
+                .nombre("iPhone 16 Pro")
+                .precio(1219.24)
+                .build();
+        model.addAttribute("producto", producto);*/
+        model.addAttribute("productos", productoRepository.findAll());
+        model.addAttribute("fecha",
+                LocalDateTime.of(2025, 1, 1, 10, 15));
+        return "tips";
     }
 
 
