@@ -61,8 +61,11 @@
     </style>
 </head>
 <body>
-    <h1>Creación de un producto</h1>
-    <form action="#" th:action="@{/producto/new/submit}" method="post" th:object="${producto}">
+    <h1>
+        <span th:text="${producto.id} ? 'Edición ' : 'Creación '"></span>de un producto
+    </h1>
+    <form action="#" th:action="@{/producto/submit}" method="post" th:object="${producto}">
+        <input type="hidden" th:field="*{id}" id="id" />
         <label for="nombre">Nombre</label>
         <input id="nombre" type="text" th:field="*{nombre}"
                placeholder="Nombre del producto" />

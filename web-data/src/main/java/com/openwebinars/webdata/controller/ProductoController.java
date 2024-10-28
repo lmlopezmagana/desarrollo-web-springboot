@@ -9,9 +9,11 @@ import lombok.extern.java.Log;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.List;
 
+@Log
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/producto")
@@ -31,7 +33,7 @@ public class ProductoController {
         return "form-producto.html";
     }
 
-    @PostMapping("/new/submit")
+    @PostMapping("/submit")
     public String procesarFomularioProducto(
             @ModelAttribute("producto") Producto producto,
             Model model) {
@@ -40,14 +42,23 @@ public class ProductoController {
 
     }
 
-    @ResponseBody
     @GetMapping({"/","/list"})
     public String list(Model model) {
         List<Producto> productos = productoService.findAll();
+        log.info(productos.toString());
         model.addAttribute("productos", productos);
-        //return "index";
-        return productos.toString();
+        return "index";
+    }
+
+    @GetMapping("/edit/{id}")
+    public String mostrarFormularioEditarProducto(
+            @PathVariable Long id,
+            Model model) {
+        Producto producto = productoService.findById(id);
+        model.addAttribute("producto", producto);
+        return "form-producto.html";
     }
 
 
 }
+

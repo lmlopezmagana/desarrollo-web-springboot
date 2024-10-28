@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+
+        body {
+            font-family: "Lato","Tahoma", "Arial";
+            margin-left: 20px;
+
+        }
+
+        table {
+            margin: auto;
+            width: 35%;
+            margin-top: 20px;
+        }
+
+
+        a.nuevo {
+            background-color: purple;
+            width: 180px;
+            display: block;
+            margin: 0px auto;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 18px;
+            color: white;
+            margin-top: 30px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        th {
+            font-size: 1.4em;
+        }
+
+        th,td {
+            border-bottom: 1px solid gray;
+            padding: 12px;
+            text-align: center;
+        }
+
+        tbody > tr:hover {
+            background-color: #ddd;
+        }
+
+        tr:hover > td.operaciones {
+            background-color: #fff;
+        }
+
+        td.operaciones {
+            width: 20%;
+        }
+
+        a.editar {
+            font-size: 18px;
+            text-decoration: none;
+            padding: 8px 12px;
+            margin-right: 12px;
+            border: 1px solid #aaa;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            background-color: orange;
+            color: white;
+        }
+
+    </style>
+</head>
+<body>
+    <h1>Gestión de productos</h1>
+    <a class="nuevo" th:href="@{/producto/new}">Nuevo producto</a>
+    <table>
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Precio</th>
+                <th>Categoría</th>
+                <th>Operaciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="producto : ${productos}">
+                <td th:text="${producto.nombre}">Nombre</td>
+                <td th:text="${producto.precio}">12.34€</td>
+                <td th:text="${producto.categoria.nombre}">Categoría</td>
+                <td class="operaciones"><a class="editar" href="#" th:href="@{/producto/edit/{id}(id=${producto.id})}">Editar</a> </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>
