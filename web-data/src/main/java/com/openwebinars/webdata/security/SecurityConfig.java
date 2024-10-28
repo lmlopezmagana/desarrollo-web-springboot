@@ -9,6 +9,9 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
+import org.springframework.security.web.savedrequest.NullRequestCache;
+import org.springframework.security.web.savedrequest.RequestCache;
 
 @Configuration
 @EnableWebSecurity
@@ -27,10 +30,21 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
+
         http
                 .authorizeHttpRequests((authz) -> authz
                         .requestMatchers("/producto/**").authenticated()
                         .anyRequest().permitAll()
+                )
+                .requestCache(cache -> {
+                    HttpSessionRequestCache requestCache = new HttpSessionRequestCache();
+                    requestCache.setMatchingRequestParameterName(null);
+                    cache.requestCache(requestCache);
+                })
+                .formLogin(form -> form
+                        .loginPage("/login")
+                        .defaultSuccessUrl("/producto/list", true)
+                        .permitAll()
                 );
 
         // Añadimos esto para poder acceder a la consola de H2
