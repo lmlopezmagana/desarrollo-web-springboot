@@ -58,6 +58,12 @@
         input[type="submit"]:hover {
             background-color: indigo;
         }
+
+        span.error {
+            display: block;
+            color: red;
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 <body>
@@ -69,15 +75,18 @@
         <label for="nombre">Nombre</label>
         <input id="nombre" type="text" th:field="*{nombre}"
                placeholder="Nombre del producto" />
+        <span class="error" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}">Error en el nombre</span>
         <label for="precio">Precio</label>
         <input id="precio" type="number" th:field="*{precio}"
                step="0.01" placeholder="12.34" />
+        <span class="error" th:if="${#fields.hasErrors('precio')}" th:errors="*{precio}">Error en el precio</span>
         <label for="categoria">Categoría</label>
         <select id="categoria" th:field="*{categoria}">
             <option value="-1">---</option>
             <option th:each="categoria : ${categorias}"
                     th:value="${categoria.id}" th:text="${categoria.nombre}">Categoría</option>
         </select>
+        <span class="error" th:if="${#fields.hasErrors('categoria')}" th:errors="*{categoria}">Error en la categoria</span>
 
         <input type="submit" value="Enviar" />
 

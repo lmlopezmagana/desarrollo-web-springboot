@@ -1,6 +1,7 @@
 package com.openwebinars.webdata.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 
@@ -18,10 +19,13 @@ public class Producto {
     @Id @GeneratedValue
     private Long id;
 
+    @NotBlank(message = "{producto.nombre.notblank}")
     private String nombre;
 
+    @Positive(message = "{producto.precio.min}")
     private double precio;
 
+    @NotNull(message = "{producto.categoria.notnull}")
     @ManyToOne
     private Categoria categoria;
 
