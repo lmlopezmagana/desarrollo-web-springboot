@@ -7,6 +7,8 @@ import com.openwebinars.webdata.service.ProductoService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -50,9 +52,10 @@ public class ProductoController {
     }
 
     @GetMapping({"/","/list"})
-    public String list(Model model) {
+    public String list(Model model/*, @AuthenticationPrincipal UserDetails user*/) {
         List<Producto> productos = productoService.findAll();
         model.addAttribute("productos", productos);
+        //model.addAttribute("user", user.getUsername());
         return "index";
     }
 
