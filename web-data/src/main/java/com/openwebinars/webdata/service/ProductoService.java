@@ -1,5 +1,6 @@
 package com.openwebinars.webdata.service;
 
+import com.openwebinars.webdata.exception.ProductoNotFoundException;
 import com.openwebinars.webdata.model.Producto;
 import com.openwebinars.webdata.repos.ProductoRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -24,7 +25,7 @@ public class ProductoService {
 
     public Producto findById(Long id){
         return productoRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Product not found"));
+                .orElseThrow(() -> new ProductoNotFoundException(id));
     }
 
     public void delete(Long id) {

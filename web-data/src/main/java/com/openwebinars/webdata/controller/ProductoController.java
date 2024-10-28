@@ -15,7 +15,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.List;
 
-@Log
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/producto")
@@ -53,7 +52,6 @@ public class ProductoController {
     @GetMapping({"/","/list"})
     public String list(Model model) {
         List<Producto> productos = productoService.findAll();
-        log.info(productos.toString());
         model.addAttribute("productos", productos);
         return "index";
     }
@@ -65,6 +63,12 @@ public class ProductoController {
         Producto producto = productoService.findById(id);
         model.addAttribute("producto", producto);
         return "form-producto";
+    }
+
+    @GetMapping("/{id}")
+    public String buscarPorId(@PathVariable Long id, Model model) {
+        model.addAttribute("producto", productoService.findById(id));
+        return "producto";
     }
 
 

@@ -68,10 +68,21 @@
             color: white;
         }
 
+        p.error-message {
+            width: 25%;
+            margin: 0 auto;
+            padding: 25px;
+            border: 1px solid red;
+            background-color: #ddd;
+        }
+
     </style>
 </head>
 <body>
     <h1>Gestión de productos</h1>
+    <th-block th:if="${errorMessage}">
+        <p class="error-message" th:text="${'Error: ' + errorMessage}">Mensaje de error</p>
+    </th-block>
     <a class="nuevo" th:href="@{/producto/new}">Nuevo producto</a>
     <table>
         <thead>
