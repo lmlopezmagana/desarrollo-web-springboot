@@ -76,10 +76,17 @@
             background-color: #ddd;
         }
 
+        a.logout {
+            display:block;
+            text-align: right;
+        }
+
     </style>
 </head>
 <body>
     <h1>Gestión de productos</h1>
+    <form th:action="@{/logout}" method="POST" id="logoutForm"></form>
+    <a class="logout" href="javascript:document.getElementById('logoutForm').submit()">Salir</a>
     <th-block th:if="${errorMessage}">
         <p class="error-message" th:text="${'Error: ' + errorMessage}">Mensaje de error</p>
     </th-block>
