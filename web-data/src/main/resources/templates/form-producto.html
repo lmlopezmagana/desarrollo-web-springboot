@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+
+        body {
+            font-family: "Lato","Tahoma", "Arial";
+            margin-left: 20px;
+
+        }
+
+        form {
+            width: 25%;
+        }
+
+        input {
+           width: 100%;
+           padding: 12px;
+           margin: 20px 0;
+           border-radius: 5px;
+           font-family: "Lato", "Tahoma", "Arial";
+
+        }
+
+        input:hover {
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.94);
+        }
+
+
+
+        select {
+            background-color: lightgray;
+            width: 100%;
+            padding: 10px;
+            border-radius: 4px;
+            padding: 12px;
+            margin: 20px 0;
+        }
+
+        input[type="submit"] {
+            background-color: purple;
+            width: 180px;
+            display: block;
+            margin: 0px auto;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 18px;
+            color: white;
+            margin-top: 30px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: indigo;
+        }
+    </style>
+</head>
+<body>
+    <h1>Creación de un producto</h1>
+    <form action="#" th:action="@{/producto/new/submit}" method="post" th:object="${producto}">
+        <label for="nombre">Nombre</label>
+        <input id="nombre" type="text" th:field="*{nombre}"
+               placeholder="Nombre del producto" />
+        <label for="precio">Precio</label>
+        <input id="precio" type="number" th:field="*{precio}"
+               step="0.01" placeholder="12.34" />
+        <label for="categoria">Categoría</label>
+        <select id="categoria" th:field="*{categoria}">
+            <option value="-1">---</option>
+            <option th:each="categoria : ${categorias}"
+                    th:value="${categoria.id}" th:text="${categoria.nombre}">Categoría</option>
+        </select>
+
+        <input type="submit" value="Enviar" />
+
+    </form>
+</body>
+</html>
