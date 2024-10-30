@@ -32,8 +32,8 @@ public class TaskController {
 
 
     @GetMapping({"/", "/list", "/task"})
-    public String taskList(Model model) {
-        model.addAttribute("taskList", taskService.findAll());
+    public String taskList(Model model, @AuthenticationPrincipal User user) {
+        model.addAttribute("taskList", taskService.findAllByUser(user));
         model.addAttribute("newTask", new CreateTaskRequest());
         return "task-list";
     }
@@ -53,7 +53,7 @@ public class TaskController {
 
 
         if (bindingResult.hasErrors()) {
-            model.addAttribute("taskList", taskService.findAll());
+            model.addAttribute("taskList", taskService.findAllByUser(author));
             return "task-list";
         }
 

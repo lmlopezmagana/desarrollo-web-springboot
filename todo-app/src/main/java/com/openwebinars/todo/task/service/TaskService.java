@@ -24,7 +24,7 @@ public class TaskService {
     private final CategoryRepository categoryRepository;
     private final TagService tagService;
 
-    public List<Task> findAll() {
+        /*public List<Task> findAll() {
 
         List<Task> result = taskRepository.findAll();
 
@@ -33,7 +33,36 @@ public class TaskService {
 
         return result;
 
+    }*/
+
+    private List<Task> findAll(User user) {
+
+        List<Task> result = null;
+
+        if (user != null)
+            result = taskRepository.findByAuthor(user, Sort.by("createdAt").ascending());
+        else
+            result = taskRepository.findAll(Sort.by("createdAt").ascending());
+
+        if (result.isEmpty())
+            throw new EmptyTaskListException();
+
+        return result;
     }
+
+    public List<Task> findAllByUser(User user) {
+        return findAll(user);
+    }
+
+    public List<Task> findAllAdmin() {
+        return findAll(null);
+    }
+
+    public Task findById(Long id) {
+        return taskRepository.findById(id)
+                .orElseThrow(() -> new TaskNotFoundException(id));
+    }
+
 
     public Task createTask(CreateTaskRequest req, User author) {
         return createOrEditTask(req, author);
