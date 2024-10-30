@@ -1,6 +1,8 @@
 package com.openwebinars.todo.task.model;
 
+import com.openwebinars.todo.category.model.Category;
 import com.openwebinars.todo.tag.model.Tag;
+import com.openwebinars.todo.user.model.User;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
@@ -44,6 +46,14 @@ public class Task {
     @Setter(AccessLevel.NONE)
     private Set<Tag> tags = new HashSet<>();
 
+    @ManyToOne
+    @JoinColumn(foreignKey = @ForeignKey(name = "fk_task_user"))
+    private User author;
+
+
+    @ManyToOne
+    @JoinColumn(foreignKey = @ForeignKey(name = "fk_task_category"))
+    private Category category;
 
     @Override
     public final boolean equals(Object o) {

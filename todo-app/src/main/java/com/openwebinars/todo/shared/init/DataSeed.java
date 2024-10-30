@@ -1,5 +1,9 @@
 package com.openwebinars.todo.shared.init;
 
+import com.openwebinars.todo.category.model.Category;
+import com.openwebinars.todo.category.model.CategoryRepository;
+import com.openwebinars.todo.task.dto.CreateTaskRequest;
+import com.openwebinars.todo.task.service.TaskService;
 import com.openwebinars.todo.user.dto.CreateUserRequest;
 import com.openwebinars.todo.user.model.User;
 import com.openwebinars.todo.user.model.UserRole;
@@ -15,12 +19,15 @@ import java.util.List;
 @RequiredArgsConstructor
 public class DataSeed {
 
-
+    private final CategoryRepository categoryRepository;
+    private final TaskService taskService;
     private final UserService userService;
 
     @PostConstruct
     public void init() {
+        insertCategories();
         List<User> users =insertUsers();
+        insertTasks(users.get(0));
     }
 
     /*
@@ -55,4 +62,27 @@ public class DataSeed {
         return result;
     }
 
+    private void insertCategories() {
+        categoryRepository.save(Category.builder().title("Main").build());
+    }
+
+    private void insertTasks(User author) {
+
+        CreateTaskRequest req1 = CreateTaskRequest.builder()
+                .title("First task!")
+                .description("Lorem ipsum dolor sit amet")
+                .tags("tag1,tag2,tag3")
+                .build();
+
+        taskService.createTask(req1, author);
+
+        CreateTaskRequest req2 = CreateTaskRequest.builder()
+                .title("Second task!")
+                .description("Lorem ipsum dolor sit amet")
+                .tags("tag1,tag2,tag4")
+                .build();
+
+        taskService.createTask(req2, author);
+
+    }
 }
