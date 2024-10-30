@@ -3,6 +3,8 @@ package com.openwebinars.todo.task.controller;
 import com.openwebinars.todo.category.model.Category;
 import com.openwebinars.todo.category.service.CategoryService;
 import com.openwebinars.todo.task.dto.CreateTaskRequest;
+import com.openwebinars.todo.task.dto.EditTaskRequest;
+import com.openwebinars.todo.task.model.Task;
 import com.openwebinars.todo.task.service.TaskService;
 import com.openwebinars.todo.user.model.User;
 import jakarta.validation.Valid;
@@ -13,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
@@ -62,7 +65,43 @@ public class TaskController {
         return "redirect:/";
     }
 
+    @GetMapping("/task/{id}")
+    public String viewOrEditTask(@PathVariable Long id, Model model) {
 
+        Task task = taskService.findById(id);
+        EditTaskRequest editTask = EditTaskRequest.of(task);
+        model.addAttribute("task", editTask);
+        return "show-task";
+
+    }
+
+    @PostMapping("/task/edit/submit")
+    public String taskEditSubmit(
+            @Valid @ModelAttribute("task") EditTaskRequest req,
+            BindingResult bindingResult,
+            Model model) {
+
+
+        if (bindingResult.hasErrors()) {
+            return "show-task";
+        }
+
+        taskService.editTask(req);
+
+        return "redirect:/";
+    }
+
+    @GetMapping("/task/{id}/toggle")
+    public String toggleTask(@PathVariable Long id) {
+        taskService.toggleComplete(id);
+        return "redirect:/";
+    }
+
+    @PostMapping("/task/{id}/del")
+    public String deleteTask(@PathVariable Long id) {
+        taskService.deleteById(id);
+        return "redirect:/";
+    }
 
 
 }

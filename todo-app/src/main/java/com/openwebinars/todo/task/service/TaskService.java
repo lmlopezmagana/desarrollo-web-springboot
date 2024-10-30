@@ -4,6 +4,7 @@ import com.openwebinars.todo.category.model.Category;
 import com.openwebinars.todo.category.model.CategoryRepository;
 import com.openwebinars.todo.tag.service.TagService;
 import com.openwebinars.todo.task.dto.CreateTaskRequest;
+import com.openwebinars.todo.task.dto.EditTaskRequest;
 import com.openwebinars.todo.task.exception.EmptyTaskListException;
 import com.openwebinars.todo.task.exception.TaskNotFoundException;
 import com.openwebinars.todo.task.model.Task;
@@ -68,6 +69,10 @@ public class TaskService {
         return createOrEditTask(req, author);
     }
 
+    public Task editTask(EditTaskRequest req) {
+        return createOrEditTask(req, null);
+    }
+
     private Task createOrEditTask(CreateTaskRequest req, User author) {
 
         Task task = Task.builder()
@@ -90,11 +95,30 @@ public class TaskService {
         // Los añadimos a task
         task.getTags().addAll(tagService.saveOrGet(textTags));
 
-        // Lo dejamos aparte porque lo modificaremos para editar
-        task.setAuthor(author);
+        // Esto solamente se procesa si queremos editar un Task
+        if (req instanceof EditTaskRequest editReq) {
+            Task oldTask = findById(editReq.getId());
+            task.setId(oldTask.getId());
+            task.setCreatedAt(oldTask.getCreatedAt());
+            task.setAuthor(oldTask.getAuthor());
+            task.setCompleted(editReq.isCompleted());
+        } else {
+            task.setAuthor(author);
+        }
 
+        // Inserta o actualiza, según corresponda
+        return taskRepository.save(task);
+
+    }
+
+    public Task toggleComplete(Long id) {
+        Task task = findById(id);
+        task.setCompleted(!task.isCompleted());
         return taskRepository.save(task);
     }
 
+    public void deleteById(Long id) {
+        taskRepository.deleteById(id);
+    }
 
 }
