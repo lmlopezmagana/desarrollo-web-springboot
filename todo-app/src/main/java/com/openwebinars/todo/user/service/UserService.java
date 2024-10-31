@@ -5,8 +5,11 @@ import com.openwebinars.todo.user.model.User;
 import com.openwebinars.todo.user.model.UserRepository;
 import com.openwebinars.todo.user.model.UserRole;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -46,6 +49,9 @@ public class UserService {
 
     }
 
+    public List<User> findAll() {
+        return userRepository.findAll(Sort.by("username"));
+    }
 
 }
 
