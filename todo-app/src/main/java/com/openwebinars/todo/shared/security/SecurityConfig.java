@@ -37,7 +37,7 @@ public class SecurityConfig {
         http.logout(Customizer.withDefaults());
 
         http.csrf((csrf) -> {
-            csrf.ignoringRequestMatchers("/h2/**");
+            csrf.ignoringRequestMatchers("/h2-console/**");
         });
         http.headers((headers) ->
                 headers.frameOptions((opts) -> opts.disable()));
